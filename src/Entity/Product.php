@@ -24,7 +24,7 @@ class Product
     private ?float $price = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date_add = null;
+    private ?\DateTimeInterface $dateAdd = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_update = null;
@@ -64,12 +64,12 @@ class Product
 
     public function getDateAdd(): ?\DateTimeInterface
     {
-        return $this->date_add;
+        return $this->dateAdd;
     }
 
-    public function setDateAdd(\DateTimeInterface $date_add): static
+    public function setDateAdd(\DateTimeInterface $dateAdd): static
     {
-        $this->date_add = $date_add;
+        $this->dateAdd = $dateAdd;
 
         return $this;
     }
@@ -101,6 +101,6 @@ class Product
     #[ORM\PrePersist]
     public function prePersist(): void
     {
-        $this->date_add = new \DateTime();
+        $this->dateAdd = new \DateTime();
     }
 }
