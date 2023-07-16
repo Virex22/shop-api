@@ -92,6 +92,11 @@ class Shop
         return $this;
     }
 
+    public function getProductsCount(): int
+    {
+        return $this->products->count();
+    }
+
     #[ORM\PrePersist]
     public function prePersist(): void
     {
