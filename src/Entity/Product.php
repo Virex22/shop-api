@@ -111,5 +111,6 @@ class Product
     public function prePersist(): void
     {
         $this->dateAdd = new \DateTime();
+        $this->date_update = new \DateTime();
     }
 }
