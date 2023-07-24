@@ -16,9 +16,10 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd ${{ secrets.PROJECT_PATH }}
-            sudo git pull origin main
-            sudo composer install
-            sudo php bin/console cache:clear
-            sudo php bin/console doctrine:schema:update --force
-            sudo php bin/console cache:clear
-            sudo php bin/console cache:warmup
+            whoami || echo
+            git pull origin main
+            composer install
+            php bin/console cache:clear
+            php bin/console doctrine:schema:update --force
+            php bin/console cache:clear
+            php bin/console cache:warmup

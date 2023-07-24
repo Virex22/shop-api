@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\QuantityType;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,6 +42,12 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shop = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
+    private ?string $quantity = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $quantityType = null;
 
     public function getId(): ?int
     {
@@ -112,5 +119,32 @@ class Product
     {
         $this->dateAdd = new \DateTime();
         $this->date_update = new \DateTime();
+    }
+
+    public function getQuantity(): ?string
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(string $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getQuantityType(): ?string
+    {
+        return $this->quantityType;
+    }
+
+    public function setQuantityType(?string $quantityType): static
+    {
+        if (!QuantityType::validate($quantityType) && $quantityType !== null) {
+            throw new \InvalidArgumentException('Invalid quantity type');
+        }
+        $this->quantityType = $quantityType;
+
+        return $this;
     }
 }
