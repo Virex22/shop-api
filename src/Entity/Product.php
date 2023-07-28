@@ -7,8 +7,11 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\QuantityType;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -28,26 +31,45 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?string $name = null;
 
     #[ORM\Column]
+
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?float $price = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?\DateTimeInterface $dateAdd = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?\DateTimeInterface $date_update = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?Shop $shop = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
+
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?string $quantity = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?string $quantityType = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ShoppingListItem::class)]
+    private Collection $shoppingListItems;
+
+    public function __construct()
+    {
+        $this->shoppingListItems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,6 +166,36 @@ class Product
             throw new \InvalidArgumentException('Invalid quantity type');
         }
         $this->quantityType = $quantityType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ShoppingListItem>
+     */
+    public function getShoppingListItems(): Collection
+    {
+        return $this->shoppingListItems;
+    }
+
+    public function addShoppingListItem(ShoppingListItem $shoppingListItem): static
+    {
+        if (!$this->shoppingListItems->contains($shoppingListItem)) {
+            $this->shoppingListItems->add($shoppingListItem);
+            $shoppingListItem->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShoppingListItem(ShoppingListItem $shoppingListItem): static
+    {
+        if ($this->shoppingListItems->removeElement($shoppingListItem)) {
+            // set the owning side to null (unless already changed)
+            if ($shoppingListItem->getProduct() === $this) {
+                $shoppingListItem->setProduct(null);
+            }
+        }
 
         return $this;
     }
