@@ -18,6 +18,7 @@ class ShoppingList
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['shoppingList'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
