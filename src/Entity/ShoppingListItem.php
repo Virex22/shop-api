@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ShoppingListItemRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -23,6 +24,7 @@ class ShoppingListItem
     private ?bool $isCompleted = null;
 
     #[ORM\ManyToOne(inversedBy: 'shoppingListItems')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?Product $product = null;
 
@@ -30,6 +32,14 @@ class ShoppingListItem
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?ShoppingList $shoppingList = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
+    private ?string $custom_name = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
+    private ?string $custom_price = null;
 
     public function getId(): ?int
     {
@@ -76,5 +86,29 @@ class ShoppingListItem
     public function prePersist(): void
     {
         $this->isCompleted = false;
+    }
+
+    public function getCustomName(): ?string
+    {
+        return $this->custom_name;
+    }
+
+    public function setCustomName(?string $custom_name): static
+    {
+        $this->custom_name = $custom_name;
+
+        return $this;
+    }
+
+    public function getCustomPrice(): ?string
+    {
+        return $this->custom_price;
+    }
+
+    public function setCustomPrice(?string $custom_price): static
+    {
+        $this->custom_price = $custom_price;
+
+        return $this;
     }
 }
