@@ -41,6 +41,10 @@ class ShoppingListItem
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?string $custom_price = null;
 
+    #[ORM\Column]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
+    private ?int $quantity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +112,18 @@ class ShoppingListItem
     public function setCustomPrice(?string $custom_price): static
     {
         $this->custom_price = $custom_price;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
