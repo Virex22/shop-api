@@ -28,10 +28,10 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?string $name = null;
 

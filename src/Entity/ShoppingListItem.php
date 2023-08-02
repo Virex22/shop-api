@@ -16,7 +16,7 @@ class ShoppingListItem
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?int $id = null;
 
     #[ORM\Column]
