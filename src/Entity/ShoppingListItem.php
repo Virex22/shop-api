@@ -24,7 +24,7 @@ class ShoppingListItem
     private ?bool $isCompleted = null;
 
     #[ORM\ManyToOne(inversedBy: 'shoppingListItems')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?Product $product = null;
 

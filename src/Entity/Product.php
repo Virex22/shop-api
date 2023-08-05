@@ -36,7 +36,6 @@ class Product
     private ?string $name = null;
 
     #[ORM\Column]
-
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?float $price = null;
 
