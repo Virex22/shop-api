@@ -53,7 +53,6 @@ class Product
     private ?Shop $shop = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
-
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?string $quantity = null;
 
@@ -62,7 +61,7 @@ class Product
     #[Groups(['shoppingListItem', 'shoppingList'])]
     private ?string $quantityType = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ShoppingListItem::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ShoppingListItem::class, cascade: ['remove'])]
     private Collection $shoppingListItems;
 
     public function __construct()
