@@ -35,11 +35,11 @@ class ShoppingListItem
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['shoppingListItem', 'shoppingList'])]
-    private ?string $custom_name = null;
+    private ?string $customName = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     #[Groups(['shoppingListItem', 'shoppingList'])]
-    private ?string $custom_price = null;
+    private ?string $customPrice = null;
 
     #[ORM\Column]
     #[Groups(['shoppingListItem', 'shoppingList'])]
@@ -94,24 +94,24 @@ class ShoppingListItem
 
     public function getCustomName(): ?string
     {
-        return $this->custom_name;
+        return $this->customName;
     }
 
-    public function setCustomName(?string $custom_name): static
+    public function setCustomName(?string $customName): static
     {
-        $this->custom_name = $custom_name;
+        $this->customName = $customName;
 
         return $this;
     }
 
     public function getCustomPrice(): ?string
     {
-        return $this->custom_price;
+        return $this->customPrice;
     }
 
-    public function setCustomPrice(?string $custom_price): static
+    public function setCustomPrice(?string $customPrice): static
     {
-        $this->custom_price = $custom_price;
+        $this->customPrice = $customPrice;
 
         return $this;
     }
