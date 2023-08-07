@@ -64,9 +64,13 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ShoppingListItem::class, cascade: ['remove'])]
     private Collection $shoppingListItems;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Ingredient::class)]
+    private Collection $ingredients;
+
     public function __construct()
     {
         $this->shoppingListItems = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +196,36 @@ class Product
             // set the owning side to null (unless already changed)
             if ($shoppingListItem->getProduct() === $this) {
                 $shoppingListItem->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ingredient>
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(Ingredient $ingredient): static
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(Ingredient $ingredient): static
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredient->getProduct() === $this) {
+                $ingredient->setProduct(null);
             }
         }
 
