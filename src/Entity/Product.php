@@ -10,6 +10,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -67,10 +68,14 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Ingredient::class)]
     private Collection $ingredients;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: PriceHistory::class, orphanRemoval: true)]
+    private Collection $priceHistories;
+
     public function __construct()
     {
         $this->shoppingListItems = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
+        $this->priceHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +148,11 @@ class Product
     {
         $this->dateAdd = new \DateTime();
         $this->date_update = new \DateTime();
+        $priceHistory = new PriceHistory();
+        $priceHistory->setDateUpdate($this->date_update);
+        $priceHistory->setPrice($this->price);
+        $priceHistory->setProduct($this);
+        $this->addPriceHistory($priceHistory);
     }
 
     public function getQuantity(): ?string
@@ -226,6 +236,36 @@ class Product
             // set the owning side to null (unless already changed)
             if ($ingredient->getProduct() === $this) {
                 $ingredient->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PriceHistory>
+     */
+    public function getPriceHistories(): Collection
+    {
+        return $this->priceHistories;
+    }
+
+    public function addPriceHistory(PriceHistory $priceHistory): static
+    {
+        if (!$this->priceHistories->contains($priceHistory)) {
+            $this->priceHistories->add($priceHistory);
+            $priceHistory->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removePriceHistory(PriceHistory $priceHistory): static
+    {
+        if ($this->priceHistories->removeElement($priceHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($priceHistory->getProduct() === $this) {
+                $priceHistory->setProduct(null);
             }
         }
 
