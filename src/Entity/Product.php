@@ -29,37 +29,37 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?float $price = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?\DateTimeInterface $dateAdd = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?\DateTimeInterface $date_update = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?Shop $shop = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?string $quantity = null;
 
     #[ORM\Column(length: 20, nullable: true)]
 
-    #[Groups(['shoppingListItem', 'shoppingList'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
     private ?string $quantityType = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ShoppingListItem::class, cascade: ['remove'])]

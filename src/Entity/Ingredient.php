@@ -6,29 +6,38 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\IngredientRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['ingredient']]
+)]
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 class Ingredient
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['ingredient'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'ingredients')]
+    #[Groups(['ingredient'])]
     private ?Product $product = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
+    #[Groups(['ingredient'])]
     private string $quantity;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['ingredient'])]
     private ?string $customQuantityType = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['ingredient'])]
     private ?string $customName = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3, nullable: true)]
+    #[Groups(['ingredient'])]
     private ?string $customPrice = null;
 
     public function getId(): ?int
