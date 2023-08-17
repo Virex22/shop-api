@@ -8,8 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['recipe']]
+)]
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Recipe
@@ -17,21 +20,27 @@ class Recipe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['recipe'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['recipe'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
+    #[Groups(['recipe'])]
     private ?int $servings = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[Groups(['recipe'])]
     private ?\DateTimeInterface $time = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Step::class, orphanRemoval: true)]
+    #[Groups(['recipe'])]
     private Collection $steps;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['recipe'])]
     private ?\DateTimeInterface $dateAdd = null;
 
     public function __construct()
