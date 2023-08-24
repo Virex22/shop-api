@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\QuantityType;
 use App\Repository\IngredientRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,28 +18,33 @@ class Ingredient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['ingredient'])]
+    #[Groups(['ingredient', 'recipe'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'ingredients')]
-    #[Groups(['ingredient'])]
+    #[Groups(['ingredient', 'recipe'])]
     private ?Product $product = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
-    #[Groups(['ingredient'])]
+    #[Groups(['ingredient', 'recipe'])]
     private string $quantity;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['ingredient'])]
+    #[Groups(['ingredient', 'recipe'])]
     private ?string $customQuantityType = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['ingredient'])]
+    #[Groups(['ingredient', 'recipe'])]
     private ?string $customName = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3, nullable: true)]
-    #[Groups(['ingredient'])]
+    #[Groups(['ingredient', 'recipe'])]
     private ?string $customPrice = null;
+
+    #[ORM\ManyToOne(inversedBy: 'ingredients')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['ingredient', 'recipe'])]
+    private ?Recipe $recipe = null;
 
     public function getId(): ?int
     {
@@ -76,6 +82,9 @@ class Ingredient
 
     public function setQuantityType(?string $customQuantityType): static
     {
+        if (!QuantityType::validate($customQuantityType) && $customQuantityType !== null) {
+            throw new \InvalidArgumentException('Invalid custom quantity type');
+        }
         $this->customQuantityType = $customQuantityType;
 
         return $this;
@@ -101,6 +110,18 @@ class Ingredient
     public function setCustomPrice(?string $customPrice): static
     {
         $this->customPrice = $customPrice;
+
+        return $this;
+    }
+
+    public function getRecipe(): ?recipe
+    {
+        return $this->recipe;
+    }
+
+    public function setRecipe(?recipe $recipe): static
+    {
+        $this->recipe = $recipe;
 
         return $this;
     }
