@@ -75,12 +75,12 @@ class Ingredient
         return $this;
     }
 
-    public function getQuantityType(): ?string
+    public function getCustomQuantityType(): ?string
     {
         return $this->customQuantityType;
     }
 
-    public function setQuantityType(?string $customQuantityType): static
+    public function setCustomQuantityType(?string $customQuantityType): static
     {
         if (!QuantityType::validate($customQuantityType) && $customQuantityType !== null) {
             throw new \InvalidArgumentException('Invalid custom quantity type');

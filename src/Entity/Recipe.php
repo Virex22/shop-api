@@ -44,6 +44,7 @@ class Recipe
     private ?\DateTimeInterface $dateAdd = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, orphanRemoval: true)]
+    #[Groups(['recipe'])]
     private Collection $ingredients;
 
     public function __construct()
