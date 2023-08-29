@@ -28,6 +28,7 @@ class Step
 
     #[ORM\ManyToOne(inversedBy: 'steps')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['recipe'])]
     private ?Recipe $recipe = null;
 
     #[ORM\Column(type: Types::INTEGER)]
