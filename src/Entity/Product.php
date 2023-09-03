@@ -29,37 +29,37 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?float $price = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?\DateTimeInterface $dateAdd = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?\DateTimeInterface $date_update = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?Shop $shop = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3)]
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?string $quantity = null;
 
     #[ORM\Column(length: 20, nullable: true)]
 
-    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient'])]
+    #[Groups(['shoppingListItem', 'shoppingList', 'ingredient', 'recipe'])]
     private ?string $quantityType = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ShoppingListItem::class, cascade: ['remove'])]
