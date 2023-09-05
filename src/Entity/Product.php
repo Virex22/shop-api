@@ -68,7 +68,7 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Ingredient::class)]
     private Collection $ingredients;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: PriceHistory::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: PriceHistory::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $priceHistories;
 
     public function __construct()
